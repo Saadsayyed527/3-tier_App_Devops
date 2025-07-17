@@ -1,0 +1,86 @@
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependency directories
+node_modules/
+bower_components/
+
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+venv/
+env/
+
+# Virtualenv
+.venv/
+ENV/
+
+# Byte-compiled / optimized / DLL files
+*.pyc
+*.pyo
+*.pyd
+
+# Editor directories and files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Environment files
+.env
+.env.*
+
+# OS backups
+*.swp
+*.bak
+*~
+
+# Compiled source
+*.class
+*.o
+*.out
+*.exe
+
+# Coverage
+coverage/
+*.cover
+*.coverage
+*.cov
+.nyc_output/
+
+# Misc
+.Python
+*.tgz
+*.gz
+*.zip
+
+# Testing
+.test/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# macOS
+*.DS_Store
+
+# Windows
+ehthumbs.db
+Icon?
+
+# Ignore CI/CD and documentation files
+Jenkinsfile
+nexus.txt
+readmee.txt

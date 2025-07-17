@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo
+    container_name: mongo
+    ports:
+      - "27017:27017"
+
+  backend:
+    image: saadsayyed/3-tier-backend:v1
+    container_name: backend
+    depends_on:
+      - mongo
+    ports:
+      - "5000:5000"
+
+  frontend:
+    image: saadsayyed/3-tier-frontend:v1
+    container_name: frontend
+    depends_on:
+      - backend
+    ports:
+      - "5173:5173"
