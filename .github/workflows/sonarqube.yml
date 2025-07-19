@@ -8,7 +8,7 @@ on:
 jobs:
   sonarqube:
     name: SonarQube Analysis
-    runs-on: ubuntu-latest  # change to 'self-hosted' if using local runner
+    runs-on: self-hosted  # change to 'self-hosted' if using local runner
 
     steps:
       - name: Checkout code
