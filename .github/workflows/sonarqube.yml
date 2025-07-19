@@ -4,17 +4,43 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   sonarqube:
-    name: SonarQube Analysis
+    name: SonarQube Code Analysis
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout source code
         uses: actions/checkout@v4
 
-      - name: SonarQube Scan
+      - name: Show runner environment
+        run: |
+          lsb_release -a
+          uname -a
+          cat /etc/os-release
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: |
+          npm ci
+
+      - name: Run tests (optional)
+        run: |
+          npm test
+
+      - name: Cache SonarScanner CLI
+        uses: actions/cache@v4
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+
+      - name: Run SonarQube Analysis
         uses: SonarSource/sonarqube-scan-action@master
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
