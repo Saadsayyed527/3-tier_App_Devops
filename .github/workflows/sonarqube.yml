@@ -17,29 +17,28 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Required for SonarQube to get full history
+          fetch-depth: 0
 
-      - name: Set up JDK 17 (if using Java)
-        uses: actions/setup-java@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
-          distribution: 'temurin'
-          java-version: 17
+          node-version: 18
 
-      # Add build step here based on your project type
-      # For example, if using Maven:
-      - name: Build with Maven
-        run: mvn clean install
+      - name: Install frontend dependencies
+        working-directory: ./client
+        run: npm install
 
-      # SonarQube scan
+      - name: Build frontend
+        working-directory: ./frontend
+        run: npm run build
+        continue-on-error: true  # Skip error if no build script
+
+      - name: Install backend dependencies
+        working-directory: ./backend
+        run: npm install
+
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v4
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-
-      # Optional: fail build if Quality Gate is not met
-      # - name: Check Quality Gate
-      #   uses: SonarSource/sonarqube-quality-gate-action@v1
-      #   timeout-minutes: 5
-      #   env:
-      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
