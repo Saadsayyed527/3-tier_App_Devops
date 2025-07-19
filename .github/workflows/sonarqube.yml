@@ -32,9 +32,10 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-
-      - name: Run SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@master
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: 'http://sonarqube.imcc.com'
+- name: Run SonarQube Scan
+  uses: SonarSource/sonarqube-scan-action@master
+  with:
+    distribution: 'zip'  # Required input to avoid "Input required and not supplied: distribution"
+  env:
+    SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    SONAR_HOST_URL: 'http://sonarqube.imcc.com'
