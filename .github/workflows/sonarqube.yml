@@ -1,40 +1,45 @@
-name: SonarQube Scan
+name: Build
 
 on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  sonarqube:
-    name: SonarQube Analysis
-    runs-on: self-hosted  # change to 'self-hosted' if using local runner
+  build:
+    name: Build and analyze
+    runs-on: windows-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
         with:
-          node-version: 18
+          fetch-depth: 0  # Required for SonarQube to get full history
 
-      - name: Install frontend dependencies
-        working-directory: frontend
-        run: npm install
-
-      - name: Install backend dependencies
-        working-directory: backend
-        run: npm install
-
-      - name: Set up Java (required for SonarQube)
-        uses: actions/setup-java@v3
+      - name: Set up JDK 17 (if using Java)
+        uses: actions/setup-java@v4
         with:
-          java-version: '17'
           distribution: 'temurin'
+          java-version: 17
 
-      - name: Run SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@master
+      # Add build step here based on your project type
+      # For example, if using Maven:
+      - name: Build with Maven
+        run: mvn clean install
+
+      # SonarQube scan
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v4
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: 'http://sonarqube.imcc.com'
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
+      # Optional: fail build if Quality Gate is not met
+      # - name: Check Quality Gate
+      #   uses: SonarSource/sonarqube-quality-gate-action@v1
+      #   timeout-minutes: 5
+      #   env:
+      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
