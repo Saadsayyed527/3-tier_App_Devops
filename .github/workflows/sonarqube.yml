@@ -25,17 +25,18 @@ jobs:
           node-version: 18
 
       - name: Install frontend dependencies
-        working-directory: ./client
+        working-directory: frontend
         run: npm install
-
-      - name: Build frontend
-        working-directory: ./frontend
-        run: npm run build
-        continue-on-error: true  # Skip error if no build script
 
       - name: Install backend dependencies
-        working-directory: ./backend
+        working-directory: backend
         run: npm install
+
+      - name: Set up Java (required for SonarQube)
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
 
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v4
